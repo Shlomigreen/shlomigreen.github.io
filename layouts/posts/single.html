@@ -1,0 +1,91 @@
+{{- define "title" }}{{ .Title }} - {{ .Site.Title }}{{ end -}}
+
+{{- define "content" -}}
+    {{- $params := .Scratch.Get "params" -}}
+
+    {{- $toc := $params.toc -}}
+    {{- if eq $toc true -}}
+        {{- $toc = .Site.Params.page.toc | default dict -}}
+    {{- else if eq $toc false -}}
+        {{- $toc = dict "enable" false -}}
+    {{- end -}}
+
+    {{- /* Auto TOC */ -}}
+    {{- if ne $toc.enable false -}}
+        <div class="toc" id="toc-auto">
+            <h2 class="toc-title">{{ T "contents" }}</h2>
+            <div class="toc-content{{ if eq $toc.auto false }} always-active{{ end }}" id="toc-content-auto"></div>
+        </div>
+    {{- end -}}
+
+    <article class="page single">
+        {{- /* Title */ -}}
+        <h1 class="single-title">{{ .Title | emojify }}</h1>
+
+        {{- /* Subtitle */ -}}
+        {{- with $params.subtitle -}}
+            <h2 class="single-subtitle">{{ . }}</h2>
+        {{- end -}}
+
+        {{- /* Post Meta */ -}}
+        <div class="post-meta-organized">
+            {{- /* First Line: Author | Date | Reading Time */ -}}
+            <div class="meta-line-1">
+                {{- $author := $params.author | default .Site.Author.name | default (T "author") -}}
+                <a href="{{ .Site.Home.RelPermalink }}" class="author">{{ $author }}</a>
+                <span class="separator">|</span>
+                {{- with .Site.Params.dateformat | default "2 Jan, 2006" | .PublishDate.Format -}}
+                    <span class="date">{{ . }}</span>
+                {{- end -}}
+                <span class="separator">|</span>
+                <span class="reading-time">{{ .ReadingTime }} Min To Read</span>
+            </div>
+            
+            {{- /* Second Line: Categories */ -}}
+            {{- if .Params.categories -}}
+                <div class="meta-line-2">
+                    <i class="far fa-folder fa-fw" aria-hidden="true"></i>
+                    {{- range .Params.categories -}}
+                        {{- $category := partialCached "function/path.html" . . | printf "/categories/%v" | $.Site.GetPage -}}
+                        <a href="{{ $category.RelPermalink }}" class="category-pill">{{ $category.Title }}</a>
+                    {{- end -}}
+                </div>
+            {{- end -}}
+        </div>
+
+        {{- /* Featured image */ -}}
+        {{- $image := $params.featuredimage -}}
+        {{- with .Resources.GetMatch "featured-image" -}}
+            {{- $image = .RelPermalink -}}
+        {{- end -}}
+        {{- with $image -}}
+            <div class="featured-image">
+                {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/img.html" -}}
+            </div>
+        {{- end -}}
+
+        {{- /* Static TOC */ -}}
+        {{- if ne $toc.enable false -}}
+            <div class="toc" id="toc-static">
+                {{- /* TOC Toggle */ -}}
+                <input type="checkbox" id="toc-toggle" />
+                <label for="toc-toggle" class="toc-toggle">
+                    <span class="toc-toggle-text">{{ T "contents" }}</span>
+                    <i class="toc-toggle-icon fas fa-angle-down fa-fw" aria-hidden="true"></i>
+                </label>
+                <div class="toc-content" id="toc-content-static">{{- dict "Content" .TableOfContents "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}</div>
+            </div>
+        {{- end -}}
+
+        {{- /* Content */ -}}
+        <div class="content" id="content">
+            {{- dict "Content" .Content "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}
+        </div>
+
+        {{- /* Footer */ -}}
+        {{- partial "single/footer.html" . -}}
+
+        {{- /* Comment */ -}}
+        {{- partial "comment.html" . -}}
+    </article>
+{{- end -}} 

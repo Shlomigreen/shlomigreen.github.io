@@ -1,0 +1,92 @@
+{{- $params := .Params | merge .Site.Params.page -}}
+
+<article class="post-card horizontal-card" itemscope itemtype="http://schema.org/Article">
+    <div class="card-wrapper">
+        {{- /* Featured image */ -}}
+        {{- $image := $params.featuredimagepreview | default $params.featuredimage -}}
+        {{- with .Resources.GetMatch "featured-image" -}}
+            {{- $image = .RelPermalink -}}
+        {{- end -}}
+        {{- with .Resources.GetMatch "featured-image-preview" -}}
+            {{- $image = .RelPermalink -}}
+        {{- end -}}
+        {{- with $image -}}
+            <div class="card-image horizontal-image">
+                <a href="{{ $.RelPermalink }}">
+                    {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/img.html" -}}
+                </a>
+            </div>
+        {{- end -}}
+
+        <div class="card-content">
+            {{- /* Title */ -}}
+            <h3 class="card-title" itemprop="name headline">
+                <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+            </h3>
+
+            {{- /* Meta */ -}}
+            <div class="card-meta">
+                {{- with .Site.Params.dateFormat | default "Jan 2, 2006" | .PublishDate.Format -}}
+                    <span class="card-date">
+                        <i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>
+                        {{- . -}}
+                    </span>
+                {{- end -}}
+
+                {{- $categories := slice -}}
+                {{- range .Params.categories -}}
+                    {{- $category := partialCached "function/path.html" . . | printf "/categories/%v" | $.Site.GetPage -}}
+                    {{- $categories = $categories | append $category.Title -}}
+                {{- end -}}
+                {{- with $categories -}}
+                    <span class="card-category">
+                        <i class="far fa-folder fa-fw" aria-hidden="true"></i>
+                        {{- index . 0 -}}
+                    </span>
+                {{- end -}}
+            </div>
+
+            {{- /* Summary content */ -}}
+            <div class="card-summary">
+                {{- with .Summary -}}
+                    {{- $content := dict "Content" . "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" -}}
+                    {{- $content | truncate 120 | safeHTML -}}
+                {{- else -}}
+                    {{- .Description | truncate 120 | safeHTML -}}
+                {{- end -}}
+            </div>
+
+            {{- /* Footer */ -}}
+            <div class="card-footer">
+                <a href="{{ .RelPermalink }}" class="read-more">
+                    {{ T "readMore" }}
+                </a>
+                {{- with .Params.tags -}}
+                    <div class="card-tags">
+                        {{- $totalTags := len . -}}
+                        {{- range $index, $value := . -}}
+                            {{- if lt $index 2 -}}
+                                {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+                                <a href="{{ $tag.RelPermalink }}" class="tag">{{ lower $tag.Title }}</a>
+                            {{- end -}}
+                        {{- end -}}
+                        {{- if gt $totalTags 2 -}}
+                            {{- $remainingTags := sub $totalTags 2 -}}
+                            <div class="tag-more-wrapper">
+                                <span class="tag-more">+{{ $remainingTags }}</span>
+                                <div class="tag-dropdown">
+                                    {{- range $index, $value := . -}}
+                                        {{- if ge $index 2 -}}
+                                            {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+                                            <a href="{{ $tag.RelPermalink }}" class="tag dropdown-tag">{{ lower $tag.Title }}</a>
+                                        {{- end -}}
+                                    {{- end -}}
+                                </div>
+                            </div>
+                        {{- end -}}
+                    </div>
+                {{- end -}}
+            </div>
+        </div>
+    </div>
+</article> 

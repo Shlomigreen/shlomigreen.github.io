@@ -1,0 +1,71 @@
+{{- /* 
+Custom Home Page Template with Single Column Card Layout
+=======================================================
+
+This template displays all posts in a single column using consistent
+card styling. All posts use the same featured card template for 
+uniformity and visual appeal.
+
+Features:
+- Single column layout (max-width: 800px, centered)
+- Consistent card styling for all posts
+- Text truncation (3 lines) for clean appearance
+- Green "Read More" buttons matching your theme
+- Responsive design for all screen sizes
+
+Available card templates (for customization):
+- card.html: Standard card with image, title, meta, summary
+- card-featured.html: Large card (currently used for all posts)
+- card-horizontal.html: Compact horizontal layout
+- card-compact.html: Minimal card without image
+*/ -}}
+
+{{- define "content" -}}
+    {{- $params := .Scratch.Get "params" -}}
+    {{- $profile := .Site.Params.home.profile -}}
+    {{- $posts := .Site.Params.home.posts -}}
+
+    <div class="page home"{{ if ne $posts.enable false }} data-home="posts"{{ end }}>
+        {{- /* Profile */ -}}
+        {{- if ne $profile.enable false -}}
+            {{- partial "home/profile.html" . -}}
+        {{- end -}}
+
+        {{- /* Content */ -}}
+        {{- if .Content -}}
+            <div class="single">
+                <div class="content" id="content">
+                    {{- dict "Content" .Content "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}
+                </div>
+            </div>
+        {{- end -}}
+
+        {{- /* Posts */ -}}
+        {{- if ne $posts.enable false | and .Site.RegularPages -}}
+            {{- /* Paginate */ -}}
+            {{- $pages := where .Site.RegularPages "Type" "posts" -}}
+            {{- if .Site.Params.page.hiddenFromHomePage -}}
+                {{- $pages = where $pages "Params.hiddenfromhomepage" false -}}
+            {{- else -}}
+                {{- $pages = where $pages "Params.hiddenfromhomepage" "!=" true -}}
+            {{- end -}}
+            {{- with $posts.paginate | default .Site.Params.paginate -}}
+                {{- $pages = $.Paginate $pages . -}}
+            {{- else -}}
+                {{- $pages = .Paginate $pages -}}
+            {{- end -}}
+            
+            {{- if $pages.Pages -}}
+                <div class="posts-grid single-column">
+                    {{- range $index, $page := $pages.Pages -}}
+                        <div class="post-item">
+                            {{- $page.Render "card-featured" -}}
+                        </div>
+                    {{- end -}}
+                </div>
+            {{- end -}}
+            
+            {{- partial "paginator.html" . -}}
+        {{- end -}}
+    </div>
+{{- end -}} 

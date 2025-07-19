@@ -1,0 +1,741 @@
+// ==============================
+// Custom Card Styles for Blog Posts
+// ==============================
+
+// Posts Grid Layout
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: visible; // Allow dropdowns to extend outside grid
+  
+  @media (min-width: 768px) {
+    gap: 2.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    gap: 3rem;
+  }
+}
+
+// Ensure page containers don't clip dropdowns
+.page.home,
+.container,
+.main {
+  overflow: visible !important;
+}
+
+// Single Column Layout
+.single-column {
+  grid-template-columns: 1fr !important;
+}
+
+// Base Card Styles
+.post-card {
+  background: var(--card-background, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: visible; // Changed from hidden to visible for dropdown
+  height: fit-content;
+  position: relative; // For z-index stacking
+  z-index: 1; // Default z-index
+  
+  // Elevate z-index when dropdown is shown
+  &:has(.tag-more-wrapper:hover) {
+    z-index: 100001; // Higher than dropdown wrapper
+  }
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  [theme=dark] & {
+    --card-background: #2d2d30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    
+    &:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px; // Maintain border radius
+}
+
+// Card Images
+.card-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0; // Only round top corners for images
+  
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+// Featured Card Specific Styles
+.featured-card {
+  .card-image.featured-image {
+    img {
+      height: 300px;
+      
+      @media (min-width: 768px) {
+        height: 350px;
+      }
+    }
+  }
+  
+  .featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    
+    i {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// Horizontal Card Specific Styles
+.horizontal-card {
+  .card-wrapper {
+    flex-direction: row;
+    
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
+  }
+  
+  .card-image.horizontal-image {
+    flex: 0 0 200px;
+    
+    @media (max-width: 767px) {
+      flex: none;
+    }
+    
+    img {
+      height: 100%;
+      min-height: 150px;
+      
+      @media (max-width: 767px) {
+        height: 200px;
+      }
+    }
+  }
+}
+
+// Card Content
+.card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: visible; // Allow dropdown to extend outside
+  position: relative; // For dropdown positioning
+}
+
+// Card Titles
+.card-title {
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  
+  a {
+    color: var(--global-font-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--global-link-hover-color);
+    }
+    
+    [theme=dark] & {
+      color: var(--global-font-color-dark);
+      
+      &:hover {
+        color: var(--global-link-hover-color-dark);
+      }
+    }
+  }
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.featured-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+// Card Meta
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--global-font-secondary-color);
+  
+  [theme=dark] & {
+    color: var(--global-font-secondary-color-dark);
+  }
+  
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  i {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+}
+
+// Card Summary
+.card-summary {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: var(--global-font-color);
+  
+  // Text truncation
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  [theme=dark] & {
+    color: var(--global-font-color-dark);
+  }
+  
+  p {
+    margin: 0 0 1rem 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Card Footer
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--global-border-color);
+  overflow: visible; // Allow dropdown to extend outside
+  position: relative; // For dropdown positioning
+  
+  [theme=dark] & {
+    border-top-color: var(--global-border-color-dark);
+  }
+}
+
+// Read More Links
+.read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--global-link-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: var(--global-link-hover-color);
+    
+    i {
+      transform: translateX(4px);
+    }
+  }
+  
+  [theme=dark] & {
+    color: var(--global-link-color-dark);
+    
+    &:hover {
+      color: var(--global-link-hover-color-dark);
+    }
+  }
+  
+  i {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+  }
+}
+
+.featured-read-more {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  background: #86DB88;
+  color: white !important;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #72c774;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(134, 219, 136, 0.3);
+  }
+}
+
+// Card Tags
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  overflow: visible; // Ensure tags dropdown can extend outside
+  position: relative; // For dropdown positioning
+  
+  .tag {
+    background: var(--global-border-color);
+    color: var(--global-font-secondary-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 2px solid transparent; // Prevent layout shift on hover
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    
+    // Add '#' symbol before tag text
+    &::before {
+      content: '#';
+      margin-right: 0.25rem;
+      opacity: 0.7;
+    }
+    
+    &:hover {
+      background: var(--global-border-color); // Keep original background
+      border: 2px solid #86DB88; // Add green outline
+      color: var(--global-font-secondary-color); // Keep original text color
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(134, 219, 136, 0.3);
+      
+      &::before {
+        opacity: 1;
+      }
+    }
+    
+    [theme=dark] & {
+      background: var(--global-border-color-dark);
+      color: var(--global-font-secondary-color-dark);
+      border: 2px solid transparent; // Prevent layout shift on hover
+      
+      &:hover {
+        background: var(--global-border-color-dark); // Keep original background
+        border: 2px solid #86DB88; // Add green outline
+        color: var(--global-font-secondary-color-dark); // Keep original text color
+        box-shadow: 0 2px 8px rgba(134, 219, 136, 0.3);
+      }
+    }
+  }
+  
+  .tag-more-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tag-more {
+    background: #86DB88;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    
+    &:hover {
+      background: #72c774;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(134, 219, 136, 0.3);
+    }
+  }
+  
+  .tag-dropdown {
+    position: absolute;
+    top: calc(100% + 8px); // Add some space above
+    left: 0;
+    background: var(--card-background, #ffffff);
+    border: 1px solid var(--global-border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    min-width: 150px;
+    max-width: 200px; // Prevent it from getting too wide
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 99999; // Much higher z-index to appear above all cards
+    
+    [theme=dark] & {
+      background: #2d2d30;
+      border-color: var(--global-border-color-dark);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .dropdown-tag {
+      display: block;
+      margin-bottom: 0.25rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  .tag-more-wrapper:hover .tag-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  // When dropdown is visible, make sure the parent elements have higher z-index
+  .tag-more-wrapper:hover {
+    z-index: 100000;
+  }
+  
+  // Mobile responsive adjustments
+  @media (max-width: 767px) {
+    .tag-dropdown {
+      left: auto;
+      right: 0;
+      min-width: 120px;
+    }
+  }
+}
+
+// Simple approach: elevate the card when any tag dropdown is hovered
+.post-card:hover {
+  z-index: 100001 !important;
+}
+
+// Responsive Adjustments
+@media (max-width: 767px) {
+  .posts-grid {
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .card-content {
+    padding: 1.25rem;
+  }
+  
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .card-tags {
+    width: 100%;
+  }
+}
+
+// Compact Card Specific Styles
+.compact-card {
+  .card-content {
+    padding: 1.25rem;
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-meta {
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-summary {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Animation for page load
+.posts-grid {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==============================
+// Blog Post Content Readability
+// ==============================
+
+// Main content areas for blog posts
+.content,
+.single .content,
+.post-content,
+.entry-content {
+  line-height: 1.5; // Increased from default 1.5 for better readability
+  
+  p {
+    line-height: 1.8;
+    margin-top: 1.5;
+    margin-bottom: 0; // More space between paragraphs
+  }
+  
+  // Headers within content
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+    margin-top: 2rem;
+    margin-bottom: 0rem;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  
+  // Special styling for H2 with decorative lines
+  h2 {
+    position: relative;
+    margin-top: 3rem; // Extra space for the horizontal line
+    margin-bottom: 1.5rem; // Space for the horizontal line
+    
+    &:first-child {
+      margin-top: 1.5rem; // Reduced space when first element
+    }
+    
+    // Full-width horizontal line above H2
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1.5rem;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      opacity: 0.2;
+      background: rgba(160, 160, 160, 0.6); // Semi-transparent grey
+      border-radius: 1px;
+    }
+    
+    // // Short horizontal line below H2
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   bottom: -0.75rem;
+    //   left: 0;
+    //   width: 100%;
+    //   height: 2px;
+    //   background: rgba(134, 219, 136, 0.8); // Green line below
+    //   border-radius: 1px;
+    // }
+  }
+  
+  // Lists with better spacing
+  ul, ol {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 1.8;
+    }
+  }
+  
+  // Blockquotes
+  blockquote {
+    line-height: 1.8;
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #86DB88;
+    background: var(--global-border-color);
+    font-style: italic;
+    
+    [theme=dark] & {
+      background: var(--global-border-color-dark);
+    }
+    
+    p {
+      margin-bottom: 1rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  // Code blocks
+  pre {
+    line-height: 1.6;
+    margin: 1.5rem 0;
+  }
+  
+  // Inline code
+  code {
+    padding: 0.2rem 0.4rem;
+    background: var(--global-border-color);
+    border-radius: 3px;
+    font-size: 0.9em;
+    
+    [theme=dark] & {
+      background: var(--global-border-color-dark);
+    }
+  }
+  
+  // Tables
+  table {
+    margin: 1.5rem 0;
+    line-height: 1.7;
+    
+    td, th {
+      padding: 0.75rem 1rem;
+      line-height: 1.7;
+    }
+  }
+}
+
+// ==============================
+// Organized Blog Post Meta
+// ==============================
+
+.single-subtitle {
+  margin-bottom: 2rem; // More space between subtitle and meta
+}
+
+.post-meta-organized {
+  margin-bottom: 2rem;
+  
+  .meta-line-1 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--global-font-secondary-color);
+    
+    [theme=dark] & {
+      color: var(--global-font-secondary-color-dark);
+    }
+    
+    .author {
+      font-weight: 500;
+      color: var(--global-font-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: #86DB88;
+        text-decoration: none;
+      }
+      
+      [theme=dark] & {
+        color: var(--global-font-color-dark);
+        
+        &:hover {
+          color: #86DB88;
+        }
+      }
+    }
+    
+    .separator {
+      color: var(--global-border-color);
+      font-weight: 300;
+      
+      [theme=dark] & {
+        color: var(--global-border-color-dark);
+      }
+    }
+    
+    .date,
+    .reading-time {
+      font-weight: 400;
+    }
+  }
+  
+  .meta-line-2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    
+    i {
+      color: var(--global-font-secondary-color);
+      margin-right: 0.25rem;
+      
+      [theme=dark] & {
+        color: var(--global-font-secondary-color-dark);
+      }
+    }
+    
+    .category-pill {
+      background: var(--global-border-color);
+      color: var(--global-font-secondary-color);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #86DB88;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-1px);
+      }
+      
+      [theme=dark] & {
+        background: var(--global-border-color-dark);
+        color: var(--global-font-secondary-color-dark);
+        
+        &:hover {
+          background: #86DB88;
+          color: white;
+        }
+      }
+    }
+  }
+} 

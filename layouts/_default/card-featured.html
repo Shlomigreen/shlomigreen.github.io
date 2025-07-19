@@ -1,0 +1,98 @@
+{{- $params := .Params | merge .Site.Params.page -}}
+
+<article class="post-card featured-card" itemscope itemtype="http://schema.org/Article">
+    <div class="card-wrapper">
+        {{- /* Featured image */ -}}
+        {{- $image := $params.featuredimagepreview | default $params.featuredimage -}}
+        {{- with .Resources.GetMatch "featured-image" -}}
+            {{- $image = .RelPermalink -}}
+        {{- end -}}
+        {{- with .Resources.GetMatch "featured-image-preview" -}}
+            {{- $image = .RelPermalink -}}
+        {{- end -}}
+        {{- with $image -}}
+            <div class="card-image featured-image">
+                <a href="{{ $.RelPermalink }}">
+                    {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/img.html" -}}
+                </a>
+            </div>
+        {{- end -}}
+
+        <div class="card-content">
+            {{- /* Title */ -}}
+            <h1 class="card-title featured-title" itemprop="name headline">
+                <a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a>
+            </h1>
+
+            {{- /* Meta */ -}}
+            <div class="card-meta">
+                {{- $author := $params.author | default .Site.Author.name | default (T "author") -}}
+                <span class="card-author">
+                    <i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>
+                    {{- $author -}}
+                </span>
+
+                {{- with .Site.Params.dateFormat | default "January 2, 2006" | .PublishDate.Format -}}
+                    <span class="card-date">
+                        <i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>
+                        {{- . -}}
+                    </span>
+                {{- end -}}
+
+                {{- $categories := slice -}}
+                {{- range .Params.categories -}}
+                    {{- $category := partialCached "function/path.html" . . | printf "/categories/%v" | $.Site.GetPage -}}
+                    {{- $categories = $categories | append $category.Title -}}
+                {{- end -}}
+                {{- with $categories -}}
+                    <span class="card-category">
+                        <i class="far fa-folder fa-fw" aria-hidden="true"></i>
+                        {{- delimit . ", " -}}
+                    </span>
+                {{- end -}}
+            </div>
+
+            {{- /* Summary content */ -}}
+            <div class="card-summary">
+                {{- with .Summary -}}
+                    {{- dict "Content" . "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" | safeHTML -}}
+                {{- else -}}
+                    {{- .Description | safeHTML -}}
+                {{- end -}}
+            </div>
+
+            {{- /* Footer */ -}}
+            <div class="card-footer">
+                <a href="{{ .RelPermalink }}" class="read-more featured-read-more">
+                    {{ T "readMore" }}
+                    <i class="fas fa-arrow-right fa-fw" aria-hidden="true"></i>
+                </a>
+                {{- with .Params.tags -}}
+                    <div class="card-tags">
+                        {{- $totalTags := len . -}}
+                        {{- range $index, $value := . -}}
+                            {{- if lt $index 3 -}}
+                                {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+                                <a href="{{ $tag.RelPermalink }}" class="tag">{{ lower $tag.Title }}</a>
+                            {{- end -}}
+                        {{- end -}}
+                        {{- if gt $totalTags 3 -}}
+                            {{- $remainingTags := sub $totalTags 3 -}}
+                            <div class="tag-more-wrapper">
+                                <span class="tag-more">+{{ $remainingTags }}</span>
+                                <div class="tag-dropdown">
+                                    {{- range $index, $value := . -}}
+                                        {{- if ge $index 3 -}}
+                                            {{- $tag := partialCached "function/path.html" $value $value | printf "/tags/%v" | $.Site.GetPage -}}
+                                            <a href="{{ $tag.RelPermalink }}" class="tag dropdown-tag">{{ lower $tag.Title }}</a>
+                                        {{- end -}}
+                                    {{- end -}}
+                                </div>
+                            </div>
+                        {{- end -}}
+                    </div>
+                {{- end -}}
+            </div>
+        </div>
+    </div>
+</article> 
