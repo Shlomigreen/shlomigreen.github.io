@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Shlomi Green",
+    "short_name": "Shlomi Green",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#7b8e72",
-    "background_color": "#7b8e72",
+    "theme_color": "#1f2b22",
+    "background_color": "#1f2b22",
     "display": "standalone"
 }

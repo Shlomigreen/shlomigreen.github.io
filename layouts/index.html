@@ -1,0 +1,62 @@
+{{ define "bodyclass" }}home{{ end }}
+{{ define "head" }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css">
+{{ end }}
+{{ define "main" }}
+{{ $p := site.Params }}
+{{ $titles := $p.titles | default (slice) }}
+{{ $max := 1 }}
+{{ range $titles }}{{ $max = math.Max $max (strings.RuneCount .) }}{{ end }}
+<main class="frame">
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+  <div class="blob b3" aria-hidden="true"></div>
+  <svg class="grain" aria-hidden="true" width="100%" height="100%">
+    <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/></filter>
+    <rect width="100%" height="100%" filter="url(#noise)"/>
+  </svg>
+
+  <div class="card">
+    <img class="avatar" src="{{ $p.avatar }}" alt="{{ $p.name }}" width="120" height="120">
+    <h1 class="name">{{ $p.name }}</h1>
+    {{ with $p.handle }}<span class="handle">{{ . }}</span>{{ end }}
+
+    {{ with $titles }}
+    <p class="whoami" data-titles="{{ jsonify . }}">
+      <span class="pill">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="prompt" aria-hidden="true">~ whoami</span>
+        <span class="slot" aria-hidden="true" style="--w:{{ int $max }}ch"><span class="typed">{{ index . 0 }}</span><span class="caret"></span></span>
+        <span class="visually-hidden">Roles: {{ delimit . ", " }}.</span>
+      </span>
+    </p>
+    {{ end }}
+
+    <nav class="icons" aria-label="Social links">
+      {{ range $p.social }}
+      <a href="{{ .url }}" aria-label="{{ .name }}" rel="me noopener" target="_blank"><i class="fa-brands fa-{{ .icon }}" aria-hidden="true"></i></a>
+      {{ end }}
+    </nav>
+  </div>
+</main>
+
+<script>
+(() => {
+  const chip = document.querySelector('.whoami');
+  if (!chip || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const titles = JSON.parse(chip.dataset.titles).map(t => [...t]); // code points, like RuneCount
+  const typedEl = chip.querySelector('.typed');
+  let titleIdx = 0, charIdx = titles[0].length, deleting = true;
+  setTimeout(function tick() {
+    const title = titles[titleIdx];
+    charIdx += deleting ? -1 : 1;
+    typedEl.textContent = title.slice(0, charIdx).join('');
+    let delay = deleting ? 45 : 90;
+    if (!deleting && charIdx === title.length) { deleting = true; delay = 1800; }
+    else if (deleting && charIdx === 0) { deleting = false; titleIdx = (titleIdx + 1) % titles.length; delay = 350; }
+    setTimeout(tick, delay);
+  }, 1800);
+})();
+</script>
+{{ end }}

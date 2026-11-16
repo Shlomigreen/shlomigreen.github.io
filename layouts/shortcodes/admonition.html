@@ -1,0 +1,5 @@
+{{- /* Stand-in for LoveIt's admonition, used by archived posts. */ -}}
+<details class="admonition"{{ if eq (printf "%v" (.Get "open")) "true" }} open{{ end }}>
+  <summary>{{ .Get "title" | default (.Get "type" | humanize) }}</summary>
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
+</details>
