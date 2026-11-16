@@ -120,12 +120,6 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
   .pill { padding: 8px 10px; gap: 6px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .blob, .caret { animation: none; }
-  .icons a { transition: none; }
-  .icons a:hover { transform: none; }
-}
-
 /* ---------- Archived posts ---------- */
 .post main { max-width: 68ch; margin: 0 auto; padding: 48px 16px 64px; line-height: 1.7; }
 .post .back {

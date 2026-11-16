@@ -44,7 +44,7 @@
 <script>
 (() => {
   const chip = document.querySelector('.whoami');
-  if (!chip || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!chip) return; // animates even with OS reduced motion, by choice
   const titles = JSON.parse(chip.dataset.titles).map(t => [...t]); // code points, like RuneCount
   const typedEl = chip.querySelector('.typed');
   let titleIdx = 0, charIdx = titles[0].length, deleting = true;

@@ -31,7 +31,7 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
   **fixed width** sized to the longest title, so only the title text changes and the prompt and frame never
   move. Titles, in order: `ai-engineer`, `tech-lead`, `data-scientist`, `team-lead`, `ai-builder`,
   `3d-printing-artist`.
-  With reduced motion or no JS, it shows a static `~ whoami ai-engineer`. Screen readers get one sentence
+  Without JS, it shows a static `~ whoami ai-engineer`. Screen readers get one sentence
   listing every title and don't hear the typing.
 - **Everything is configurable in `config.toml` `[params]`** (no edits to templates needed): display name,
   handle, avatar URL, titles list, and social links. Each social link has a name, URL, and icon.
@@ -41,7 +41,8 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
   surface border plus a fern ring, the handle sits in a lichen pill, the title is in bark, and the icons are
   pine circles that turn clay and tilt on hover.
   The blobs drift slowly, each moving about 40px with a little rotation or scale and gently changing shape
-  over an 18 to 26 second back-and-forth loop. It's pure CSS and turns off under reduced motion.
+  over an 18 to 26 second back-and-forth loop. It's pure CSS.
+  All animations deliberately ignore the OS reduced-motion setting (Shlomi's call after launch).
 - **Palette:** surface #f2efe6, moss #3f5a3c, fern #6f8f68, lichen #b7c2a0, bark #6b4f3a,
   clay #865a3c, pine #1f2b22 (also the text color; it replaced the identical "ink").
   Added in the build: clay-light #e0b48f for the typed title, because clay on pine is only about 2.9:1, and
@@ -78,8 +79,8 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
   library.
 - The GitHub Actions workflow is trimmed: the submodule checkout, npm step, and `HUGO_ENV*` variables are
   gone, since there is no theme or `package.json` anymore.
-- Accessibility: icon links get `aria-label`s, there's a visible focus ring, and animations are wrapped
-  in `prefers-reduced-motion`.
+- Accessibility: icon links get `aria-label`s, and there's a visible focus ring. Animations run regardless
+  of `prefers-reduced-motion` (see above).
 
 
 ## Left to the builder
