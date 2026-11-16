@@ -1,4 +1,8 @@
 {{ define "bodyclass" }}home{{ end }}
+{{ define "head" }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css">
+{{ end }}
 {{ define "main" }}
 {{ $p := site.Params }}
 {{ $titles := $p.titles | default (slice) }}
@@ -24,7 +28,7 @@
         <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="prompt" aria-hidden="true">~ whoami</span>
         <span class="slot" aria-hidden="true" style="--w:{{ int $max }}ch"><span class="typed">{{ index . 0 }}</span><span class="caret"></span></span>
-        <span class="visually-hidden">{{ delimit . ", " }}</span>
+        <span class="visually-hidden">Roles: {{ delimit . ", " }}.</span>
       </span>
     </p>
     {{ end }}
@@ -41,16 +45,16 @@
 (() => {
   const chip = document.querySelector('.whoami');
   if (!chip || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const titles = JSON.parse(chip.dataset.titles);
-  const el = chip.querySelector('.typed');
-  let t = 0, i = titles[0].length, deleting = true;
+  const titles = JSON.parse(chip.dataset.titles).map(t => [...t]); // code points, like RuneCount
+  const typedEl = chip.querySelector('.typed');
+  let titleIdx = 0, charIdx = titles[0].length, deleting = true;
   setTimeout(function tick() {
-    const s = titles[t];
-    i += deleting ? -1 : 1;
-    el.textContent = s.slice(0, i);
+    const title = titles[titleIdx];
+    charIdx += deleting ? -1 : 1;
+    typedEl.textContent = title.slice(0, charIdx).join('');
     let delay = deleting ? 45 : 90;
-    if (!deleting && i === s.length) { deleting = true; delay = 1800; }
-    else if (deleting && i === 0) { deleting = false; t = (t + 1) % titles.length; delay = 350; }
+    if (!deleting && charIdx === title.length) { deleting = true; delay = 1800; }
+    else if (deleting && charIdx === 0) { deleting = false; titleIdx = (titleIdx + 1) % titles.length; delay = 350; }
     setTimeout(tick, delay);
   }, 1800);
 })();

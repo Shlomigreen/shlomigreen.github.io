@@ -36,13 +36,16 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
 - **Everything is configurable in `config.toml` `[params]`** (no edits to templates needed): display name,
   handle, avatar URL, titles list, and social links. Each social link has a name, URL, and icon.
 - **Style "B · Moss & clay blobs":** pine `#1f2b22` background with large organic blobs in moss, clay,
-  and lichen, a light film grain, and a frosted, slightly translucent surface-colored card. The avatar has a
+  and lichen, a light film grain, and a slightly translucent (92%) surface-colored card. There is no backdrop
+  blur: at 92% it barely showed and it cost a full-screen blur on every frame. The avatar has a
   surface border plus a fern ring, the handle sits in a lichen pill, the title is in bark, and the icons are
   pine circles that turn clay and tilt on hover.
-  The blobs drift slowly, each moving about 40px and gently changing shape over an 18 to 26 second
-  back-and-forth loop. It's pure CSS and turns off under reduced motion.
-- **Palette:** surface #f2efe6, ink #1f2b22, moss #3f5a3c, fern #6f8f68, lichen #b7c2a0, bark #6b4f3a,
-  clay #865a3c, pine #1f2b22.
+  The blobs drift slowly, each moving about 40px with a little rotation or scale and gently changing shape
+  over an 18 to 26 second back-and-forth loop. It's pure CSS and turns off under reduced motion.
+- **Palette:** surface #f2efe6, moss #3f5a3c, fern #6f8f68, lichen #b7c2a0, bark #6b4f3a,
+  clay #865a3c, pine #1f2b22 (also the text color; it replaced the identical "ink").
+  Added in the build: clay-light #e0b48f for the typed title, because clay on pine is only about 2.9:1, and
+  paper-2 #e8e4d8 for inline code and admonition backgrounds on post pages.
 - **Fonts (Google Fonts):** Bricolage Grotesque for the name and headings, Figtree for body text, IBM Plex Mono
   for the handle and the terminal chip.
 - Reference mockups (not committed): `.superpowers/brainstorm/*/content/homepage-v4-styles.html` option B for
@@ -59,7 +62,9 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
   `layouts/shortcodes/` so the posts still build: `admonition` becomes a `<details>` box, and `person`
   becomes a plain link.
 - `disableKinds = ["taxonomy", "term", "section", "RSS"]`, so there are no list pages, tag pages, or feed.
-  Post pages still render at `/posts/<slug>/`.
+  Post pages still render at `/posts/<slug>/`, and `sitemap.xml` is still built so they stay findable.
+- Every page gets Open Graph and Twitter card tags from Hugo's built-in templates, so links shared in chat
+  apps show a preview. The image is `params.images` (the avatar).
 - Archived posts stay indexable by search engines, with no `noindex`, so people searching can still find
   them. Flip this if "unlist" should also mean hidden from Google.
 - Defaults in config: avatar is the GitHub avatar URL. Social URLs are github.com/Shlomigreen,
@@ -69,9 +74,10 @@ The site should stay cheap to grow later (e.g. a Projects or Talks page) without
   use Simple Icons because it no longer ships a LinkedIn icon.
 - The chip width is computed in the template from the longest title, as `Nch` in the mono font. The longest
   title, `3d-printing-artist`, is 18 characters, which is tight on a 360px phone, so the chip's font size and
-  the card padding shrink on narrow screens (`clamp`). The rotation is about 15 lines of inline JS with no
+  the card padding shrink under a `max-width: 400px` media query. The three dots stay visible there. The rotation is about 15 lines of inline JS with no
   library.
-- The GitHub Actions workflow stays as is. `submodules: recursive` becomes harmless and can stay.
+- The GitHub Actions workflow is trimmed: the submodule checkout, npm step, and `HUGO_ENV*` variables are
+  gone, since there is no theme or `package.json` anymore.
 - Accessibility: icon links get `aria-label`s, there's a visible focus ring, and animations are wrapped
   in `prefers-reduced-motion`.
 

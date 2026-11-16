@@ -1,20 +1,22 @@
 :root {
   --surface: #f2efe6;
-  --ink: #1f2b22;
   --moss: #3f5a3c;
   --fern: #6f8f68;
   --lichen: #b7c2a0;
   --bark: #6b4f3a;
   --clay: #865a3c;
   --pine: #1f2b22;
-  --clay-light: #e0b48f;
+  --clay-light: #e0b48f; /* clay on pine is ~2.9:1; this passes */
+  --paper-2: #e8e4d8;
+  --mono: "IBM Plex Mono", monospace;
+  --display: "Bricolage Grotesque", sans-serif;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
   font-family: Figtree, system-ui, sans-serif;
-  color: var(--ink);
+  color: var(--pine);
   background: var(--surface);
 }
 a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
@@ -32,7 +34,7 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
   display: grid; place-items: center;
 }
 
-.blob { position: absolute; filter: blur(2px); }
+.blob { position: absolute; }
 .b1 {
   width: 46vmax; height: 42vmax; max-width: 520px; max-height: 480px;
   background: var(--moss); top: -10vmax; left: -12vmax;
@@ -62,9 +64,7 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
   width: 100%; max-width: 380px;
   padding: 44px 28px 36px;
   border-radius: 22px;
-  background: rgba(242, 239, 230, .92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid rgba(255, 255, 255, .4);
   display: flex; flex-direction: column; align-items: center; text-align: center;
 }
@@ -74,17 +74,17 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
   margin-bottom: 20px;
 }
 .name {
-  font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+  font-family: var(--display); font-weight: 800;
   font-size: 36px; line-height: 1.05; letter-spacing: -.03em; margin: 0;
 }
 .handle {
   margin-top: 10px; padding: 4px 10px; border-radius: 999px;
   background: var(--lichen); color: var(--pine);
-  font-family: "IBM Plex Mono", monospace; font-size: 13px;
+  font-family: var(--mono); font-size: 13px;
 }
 
 /* ~ whoami chip */
-.whoami { margin: 22px 0 26px; font-family: "IBM Plex Mono", monospace; font-size: 15px; white-space: nowrap; }
+.whoami { margin: 22px 0 26px; font-family: var(--mono); font-size: 15px; white-space: nowrap; }
 .pill {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 9px 14px; border-radius: 12px;
@@ -96,7 +96,7 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
 .dots i:nth-child(2) { background: var(--lichen); }
 .dots i:nth-child(3) { background: var(--fern); }
 .prompt { color: var(--lichen); }
-.slot { display: inline-block; width: var(--w); text-align: left; }
+.slot { display: inline-block; width: calc(var(--w) + .6em + 2px); text-align: left; } /* title + caret */
 .typed { color: var(--clay-light); font-weight: 500; }
 .caret {
   display: inline-block; width: .6em; height: 1.15em; margin-left: 2px; vertical-align: -3px;
@@ -118,7 +118,6 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
   .card { padding: 36px 16px 30px; }
   .whoami { font-size: 12.5px; }
   .pill { padding: 8px 10px; gap: 6px; }
-  .dots { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -130,18 +129,18 @@ a:focus-visible { outline: 3px solid var(--clay); outline-offset: 3px; }
 /* ---------- Archived posts ---------- */
 .post main { max-width: 68ch; margin: 0 auto; padding: 48px 16px 64px; line-height: 1.7; }
 .post .back {
-  font-family: "IBM Plex Mono", monospace; font-size: 13px;
+  font-family: var(--mono); font-size: 13px;
   color: var(--moss); text-decoration: none;
 }
-.post h1, .post h2, .post h3 { font-family: "Bricolage Grotesque", sans-serif; line-height: 1.2; letter-spacing: -.02em; }
+.post h1, .post h2, .post h3 { font-family: var(--display); line-height: 1.2; letter-spacing: -.02em; }
 .post h1 { font-size: clamp(30px, 6vw, 42px); margin: 28px 0 6px; }
 .post .subtitle { color: var(--bark); font-size: 19px; margin: 0; }
-.post time { display: block; margin: 10px 0 32px; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--clay); }
+.post time { display: block; margin: 10px 0 32px; font-family: var(--mono); font-size: 13px; color: var(--clay); }
 .post a { color: var(--moss); }
 .post img { max-width: 100%; height: auto; border-radius: 10px; }
 .post pre { overflow-x: auto; padding: 14px 16px; border: 1px solid var(--lichen); border-radius: 10px; font-size: 14px; }
-.post code { font-family: "IBM Plex Mono", monospace; }
-.post :not(pre) > code { background: #e6e2d5; padding: 1px 5px; border-radius: 4px; font-size: .9em; }
+.post code { font-family: var(--mono); }
+.post :not(pre) > code { background: var(--paper-2); padding: 1px 5px; border-radius: 4px; font-size: .9em; }
 .post blockquote { margin: 0; padding-left: 16px; border-left: 3px solid var(--lichen); color: var(--bark); }
-.post .admonition { margin: 24px 0; padding: 12px 16px; border-left: 4px solid var(--fern); background: #e9e6da; border-radius: 0 10px 10px 0; }
+.post .admonition { margin: 24px 0; padding: 12px 16px; border-left: 4px solid var(--fern); background: var(--paper-2); border-radius: 0 10px 10px 0; }
 .post .admonition summary { font-weight: 700; cursor: pointer; }

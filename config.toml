@@ -2,8 +2,8 @@ baseURL = "https://shlomigreen.github.io/"
 languageCode = "en"
 title = "Shlomi Green"
 
-# Only the home page and individual (archived) posts are built.
-disableKinds = ["taxonomy", "term", "section", "RSS", "sitemap"]
+# Only the home page, individual (archived) posts, and the sitemap are built.
+disableKinds = ["taxonomy", "term", "section", "RSS"]
 
 [markup.highlight]
   # Inline colors for code blocks in archived posts; no extra CSS needed.
@@ -18,6 +18,8 @@ disableKinds = ["taxonomy", "term", "section", "RSS", "sitemap"]
   avatar = "https://avatars.githubusercontent.com/u/31320788?v=4"
   # Meta description for search engines and link previews
   description = "AI engineer, tech lead, and 3D printing artist."
+  # Image for link previews (Open Graph / Twitter cards)
+  images = ["https://avatars.githubusercontent.com/u/31320788?v=4"]
   # Typed one at a time after "~ whoami". The chip width fits the longest one.
   titles = ["ai-engineer", "tech-lead", "data-scientist", "team-lead", "ai-builder", "3d-printing-artist"]
 
