@@ -1,181 +1,37 @@
-baseURL = "http://shlomigreen.github.io"
-
-# Change the default theme to be use when building the site with Hugo
-theme = "LoveIt"
-
-# website title
+baseURL = "https://shlomigreen.github.io/"
+languageCode = "en"
 title = "Shlomi Green"
 
-# language code ["en", "zh-CN", "fr", "pl", ...]
-languageCode = "en"
-# language name ["English", "简体中文", "Français", "Polski", ...]
-languageName = "English"
+# Only the home page and individual (archived) posts are built.
+disableKinds = ["taxonomy", "term", "section", "RSS", "sitemap"]
 
-# Author config
-[author]
-  name = "Shlomi Green"
-  email = ""
-  link = ""
-
-# Menu config
-[menu]
-  [[menu.main]]
-    weight = 1
-    identifier = "posts"
-    # you can add extra information before the name (HTML format is supported), such as icons
-    pre = ""
-    # you can add extra information after the name (HTML format is supported), such as icons
-    post = ""
-    name = "Posts"
-    url = "/posts/"
-    # title will be shown when you hover on this menu link
-    title = ""
-  [[menu.main]]
-    weight = 2
-    identifier = "tags"
-    pre = ""
-    post = ""
-    name = "Tags"
-    url = "/tags/"
-    title = ""
-  [[menu.main]]
-    weight = 3
-    identifier = "categories"
-    pre = ""
-    post = ""
-    name = "Categories"
-    url = "/categories/"
-    title = ""
-  [[menu.main]]
-    weight = 4
-    identifier = "about"
-    pre = ""
-    post = ""
-    name = "About"
-    url = "/about/"
-    title = ""
-
-# Markup related configuration in Hugo
-[markup]
-  # Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
-  [markup.highlight]
-    # false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
-    noClasses = false
-
-[outputs]
-  home = ["HTML", "RSS", "JSON"]
+[markup.highlight]
+  # Inline colors for code blocks in archived posts; no extra CSS needed.
+  noClasses = true
 
 [params]
-  # website title for Open Graph and Twitter Cards
-  title = "Shlomi Green Codes"
-  # website description for RSS, SEO, Open Graph and Twitter Cards
-  description = "Data Science & Beyond"
+  # Shown on the card and in the page <title>
+  name = "Shlomi Green"
+  # Shown under the name, in mono
+  handle = "@shlomigreen"
+  # Profile picture URL (or a path under static/, e.g. "/me.jpg")
+  avatar = "https://avatars.githubusercontent.com/u/31320788?v=4"
+  # Meta description for search engines and link previews
+  description = "AI engineer, tech lead, and 3D printing artist."
+  # Typed one at a time after "~ whoami". The chip width fits the longest one.
+  titles = ["ai-engineer", "tech-lead", "data-scientist", "team-lead", "ai-builder", "3d-printing-artist"]
 
-  [params.header.title]
-    # URL of the LOGO
-    logo = ""
-    # title name
-    name = "Shlomi Green"
-    # you can add extra information before the name (HTML format is supported), such as icons
-    pre = ""
-    # you can add extra information after the name (HTML format is supported), such as icons
-    post = ""
-    # whether to use typeit animation for title name
-    typeit = false
-
-  [params.footer]
-    enable = true
-    # Custom content (HTML format is supported)
-    custom = ""
-    # whether to show Hugo and theme info
-    hugo = false
-    # whether to show copyright info
-    copyright = true
-    # whether to show the author
-    author = true
-    # site creation time
-    since = 2023
-    # license info (HTML format is supported)
-    license= ""
-  
-  [params.app]
-    # optional site title override for the app when added to an iOS home screen or Android launcher
-    title = "My cool site"
-    # whether to omit favicon resource links
-    noFavicon = false
-    # modern SVG favicon to use in place of older style .png and .ico files
-    svgFavicon = ""
-    # Android browser theme color
-    themeColor = "#ffffff"
-    # Safari mask icon color
-    iconColor = "#5bbad5"
-    # Windows v8-11 tile color
-    tileColor = "#da532c"
-
-  [params.search]
-    enable = true
-    # type of search engine ["lunr", "algolia"]
-    type = "lunr"
-    # max index length of the chunked content
-    contentLength = 4000
-    # placeholder of the search bar
-    placeholder = ""
-    #  max number of results length
-    maxResultLength = 10
-    #  snippet length of the result
-    snippetLength = 30
-    #  HTML tag name of the highlight part in results
-    highlightTag = "em"
-    #  whether to use the absolute URL based on the baseURL in search index
-    absoluteURL = false
-
-  [params.home]
-    [params.home.profile]
-      enable = true
-      # Gravatar Email for preferred avatar in home page
-      gravatarEmail = ""
-      # URL of avatar shown in home page
-      avatarURL = "https://avatars.githubusercontent.com/u/31320788?v=4"
-      # title shown in home page (HTML format is supported)
-      title = ""
-      # subtitle shown in home page (HTML format is supported)
-      subtitle = "AI / ML Engineer & Tech Lead"
-      # whether to use typeit animation for subtitle
-      typeit = false
-      # whether to show social links
-      social = true
-      # disclaimer (HTML format is supported)
-      disclaimer = ""
-    [params.social]
-      GitHub = "Shlomigreen"
-      Linkedin = "shlomigreen/"
-      Twitter = "theshlomigreen"
-      # Medium = "@shlomigreen"
-      # Kaggle = "shlomigreen"
-
-  [params.page]
-    [params.page.share]
-      enable = true
-      Twitter = true
-      Facebook = true
-      Linkedin = true
-      Whatsapp = false
-      Pinterest = false
-      Tumblr = false
-      HackerNews = false
-      Reddit = true
-      VK = false
-      Buffer = false
-      Xing = false
-      Line = false
-      Instapaper = false
-      Pocket = false
-      Flipboard = false
-      Weibo = false
-      Blogger = false
-      Baidu = false
-      Odnoklassniki = false
-      Evernote = false
-      Skype = false
-      Trello = false
-      Mix = false
+  # Social links, shown left to right.
+  # icon = a Font Awesome Free brand name: https://fontawesome.com/search?ic=brands
+  [[params.social]]
+    name = "GitHub"
+    url = "https://github.com/Shlomigreen"
+    icon = "github"
+  [[params.social]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/shlomigreen/"
+    icon = "linkedin"
+  [[params.social]]
+    name = "X"
+    url = "https://x.com/theshlomigreen"
+    icon = "x-twitter"

@@ -1,0 +1,12 @@
+{{ define "bodyclass" }}post{{ end }}
+{{ define "main" }}
+<main>
+  <a class="back" href="{{ "/" | relURL }}">← {{ site.Params.name }}</a>
+  <article>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+    {{ .Content }}
+  </article>
+</main>
+{{ end }}
